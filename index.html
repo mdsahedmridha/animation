@@ -1,15 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset="UTF-8">
 
 <style>
+html, body{
+  margin:0;
+  padding:0;
+  background:#000;
+  height:100%;
+}
+
 body{
-  font-family: Arial;
   display:flex;
   justify-content:center;
   align-items:center;
-  height:100vh;
-  background:#000;
+  font-family: Arial;
   color:#fff;
 }
 
@@ -31,16 +37,19 @@ span{
 <h1>I'm a <span id="text"></span></h1>
 
 <script>
-let words = ["Student", "Volunteer", "German Learner", "Content Writer"];
+const words = ["Student", "Volunteer", "German Learner", "Content Writer"];
 
 let i = 0;
 let j = 0;
 let isDeleting = false;
 
 function type(){
-  let current = words[i];
 
-  document.getElementById("text").innerHTML = current.substring(0, j);
+  const current = words[i];
+
+  // ✅ FIX: always safe slicing (no missing last letter)
+  const displayText = current.substring(0, j);
+  document.getElementById("text").textContent = displayText;
 
   if(!isDeleting){
     j++;
@@ -48,16 +57,19 @@ function type(){
     j--;
   }
 
-  let speed = isDeleting ? 80 : 140;
+  let speed = isDeleting ? 60 : 100;
 
-  if(!isDeleting && j === current.length){
-    speed = 1200;
+  // word fully typed → pause
+  if(!isDeleting && j > current.length){
     isDeleting = true;
+    speed = 800;
   }
 
-  if(isDeleting && j === 0){
+  // word fully deleted → next word
+  if(isDeleting && j < 0){
     isDeleting = false;
     i = (i + 1) % words.length;
+    j = 0;
   }
 
   setTimeout(type, speed);
