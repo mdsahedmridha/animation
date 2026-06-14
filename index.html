@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+
 <style>
 body{
   font-family: Arial;
@@ -8,7 +9,8 @@ body{
   justify-content:center;
   align-items:center;
   height:100vh;
-  background:#fff;
+  background:#000;
+  color:#fff;
 }
 
 h1{
@@ -16,11 +18,12 @@ h1{
 }
 
 span{
-  color:#0d6efd;
-  border-right:2px solid black;
+  color:#00ffcc;
+  border-right:2px solid #00ffcc;
   padding-right:5px;
 }
 </style>
+
 </head>
 
 <body>
@@ -29,24 +32,27 @@ span{
 
 <script>
 let words = ["Student", "Volunteer", "German Learner", "Content Writer"];
+
 let i = 0;
 let j = 0;
-let current = "";
 let isDeleting = false;
 
 function type(){
-  current = words[i];
+  let current = words[i];
 
-  if(isDeleting){
-    document.getElementById("text").innerHTML = current.substring(0, j--);
+  document.getElementById("text").innerHTML = current.substring(0, j);
+
+  if(!isDeleting){
+    j++;
   } else {
-    document.getElementById("text").innerHTML = current.substring(0, j++);
+    j--;
   }
 
+  let speed = isDeleting ? 80 : 140;
+
   if(!isDeleting && j === current.length){
+    speed = 1200;
     isDeleting = true;
-    setTimeout(type, 1000);
-    return;
   }
 
   if(isDeleting && j === 0){
@@ -54,7 +60,7 @@ function type(){
     i = (i + 1) % words.length;
   }
 
-  setTimeout(type, isDeleting ? 60 : 120);
+  setTimeout(type, speed);
 }
 
 type();
